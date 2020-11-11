@@ -1,9 +1,9 @@
 
 # Column names and column indices to read
-columns = {'date':0, 'time':1, 'tempout':2, 'windspeed':7}
+columns = {'date':0, 'time':1, 'tempout':2, 'windspeed':7, 'windchill':12}
 
 # Data types for each column (only if non-string)
-types = {'tempout': float, 'windspeed':float}
+types = {'tempout': float, 'windspeed':float, 'windchill':float}
 
 # Init. my data variable
 data = {}
@@ -31,7 +31,7 @@ with open(filename, 'r') as datafile:  # closes file automatically
 # Compute the wind chill temperature
 def compute_windchill(t, v):
     a = 35.74  # empirical constants
-    b = 0.6215
+    b = 0.6215  # this formula fits best for temp < 45 F
     c = 35.75
     d = 0.4275
 
@@ -47,5 +47,6 @@ for temp, windspeed in zip(data['tempout'], data['windspeed']):
     windchill.append(compute_windchill(temp, windspeed))
 
 # DEBUG
-print(windchill)
+for wc_data, wc_comp in zip(data['windchill'], windchill):
+    print(f'{wc_data:.5f} {wc_comp:.5f} {wc_data -wc_comp:.5f}')
 
